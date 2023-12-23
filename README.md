@@ -1,4 +1,4 @@
-# PPTChecker - Powerpoint Checker
+# PPTChecker - PowerPoint Checker
 
 PPTChecker is a tool to check the format of your PowerPoint presentations
 so that they can be optimized to better engage with your audience!
@@ -49,7 +49,7 @@ python pptchecker.py -p <path/to/pptx/file>
 To run it on an example program,
 
 ```
-python pptchecker.py -p test/demo.pptx
+python pptchecker.py -p test/test_pptx/demo.pptx
 ```
 
 ![Example Screenshot of PPTChecker](PPTChecker_Screenshot.png)
