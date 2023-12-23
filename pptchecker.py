@@ -3,7 +3,7 @@
 import argparse
 import sys
 from pptx import Presentation
-from util import display_comments_on_webpage
+from util import display_comments_on_webpage, is_backup_slide
 from rules import (
     must_end_with_summary_slide,
     should_have_slide_numbers,
@@ -16,16 +16,15 @@ from rules import (
 
 parser = argparse.ArgumentParser(description='Analyze')
 parser.add_argument('-p', '--presentation', type=str)
+parser.add_argument('-o', '--output', type=str, default="output.html")
 args = parser.parse_args()
 
 
 def main_controller(prs):
     slide_feedback = []
     for slide in prs.slides:
-        if slide.shapes.title:
-            title = slide.shapes.title.text.lower()
-            if "backup" in title:
-                break
+        if is_backup_slide(slide):
+            break
         slide_feedback.append("")
 
     general_feedback = ""
@@ -66,13 +65,19 @@ def main_controller(prs):
             pass_all_checks = False
             slide_feedback[slide_i] = feedback.replace('\n', '<br>')
 
-    display_comments_on_webpage(time_estimate, slide_feedback,
-                                slide_times, cumul_slide_times,
-                                general_feedback, pass_all_checks)
+    display_info = {}
+    display_info["slide_feedback"] = slide_feedback
+    display_info["slide_times"] = slide_times
+    display_info["cumul_slide_times"] = cumul_slide_times
+    display_info["general_feedback"] = general_feedback
+
+    display_comments_on_webpage(time_estimate, display_info,
+                                pass_all_checks, args.output)
 
 
 def main():
     if not args.presentation:
+        print("Must provide a presentation file.")
         sys.exit()
     if not args.presentation.endswith(".pptx"):
         print("Input file must be of '.pptx' type.")

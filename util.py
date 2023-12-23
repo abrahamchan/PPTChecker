@@ -215,21 +215,22 @@ def is_full_sentence(classified_words):
     return sentence_comp_count >= 3
 
 
-def display_comments_on_webpage(time_estimate, slide_feedback,
-                                slide_times, cumul_slide_times,
-                                general_feedback, pass_all_checks):
-    dataframe = pd.DataFrame(slide_feedback, columns=["Feedback"])
+def display_comments_on_webpage(time_estimate, display_info,
+                                pass_all_checks, output_file):
+    dataframe = pd.DataFrame(display_info["slide_feedback"], columns=["Feedback"])
     dataframe.index += 1
     dataframe = dataframe.rename_axis("Slide #").reset_index()
-    dataframe["Time at Slide Start"] = cumul_slide_times
-    dataframe["Time Spent on Slide"] = slide_times
+    dataframe["Time at Slide Start"] = display_info["cumul_slide_times"]
+    dataframe["Time Spent on Slide"] = display_info["slide_times"]
 
     html_table_blue_light = build_table(dataframe, 'blue_dark',
                                         index=False, escape=False)
-    with open('output.html', 'w') as wfile:
+    with open(output_file, 'w') as wfile:
         wfile.write("<h3>General Feedback:</h3>")
         if time_estimate:
             wfile.write(f"Estimate total time for presentation: {time_estimate}")
+
+        general_feedback = display_info["general_feedback"]
 
         if not general_feedback and pass_all_checks:
             wfile.write("<p>Presentation passed all checks!</p>")
@@ -238,5 +239,5 @@ def display_comments_on_webpage(time_estimate, slide_feedback,
 
         wfile.write(html_table_blue_light)
 
-    webbrowser.open_new_tab("output.html")
+    webbrowser.open_new_tab(output_file)
 
