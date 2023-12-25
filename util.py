@@ -3,6 +3,7 @@
 import colorsys
 import string
 import webbrowser
+import yaml
 import numpy as np
 import pandas as pd
 from pretty_html_table import build_table
@@ -12,6 +13,13 @@ from nltk.corpus import wordnet
 from pptx.enum.dml import MSO_THEME_COLOR
 from pptx.opc.constants import RELATIONSHIP_TYPE as RT
 from pptx.oxml import parse_xml
+
+
+def read_config_yaml(yaml_file_path):
+    with open(yaml_file_path, "r") as yaml_file:
+        config = yaml.safe_load(yaml_file)
+    return config
+
 
 def get_slide_notes(slide):
     result = ""

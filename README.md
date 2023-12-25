@@ -25,7 +25,7 @@ PPTChecker has been tested on both Microsoft Powerpoint (MS Office 2021) and Goo
 
 ## Installation
 
-1. Install all dependencies listed in `requirements.txt` by running this command:
+1. PPTChecker requires Python 3+. Install all dependencies listed in `requirements.txt` by running this command:
 
 ```
 pip install -r requirements.txt

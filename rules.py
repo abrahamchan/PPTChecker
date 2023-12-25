@@ -88,8 +88,8 @@ def should_have_slide_numbers(prs, slide_feedback):
     return has_slide_numbers
 
 
-def has_smooth_slide_transitions(prs, slide_feedback):
-    shape_pos_threshold = 0.1
+def has_smooth_slide_transitions(prs, config, slide_feedback):
+    shape_pos_threshold = config["shape_pos_threshold"]
 
     has_smooth_transitions = True
 
@@ -177,12 +177,12 @@ def has_smooth_slide_transitions(prs, slide_feedback):
     return has_smooth_transitions
 
 
-def should_have_high_contrast_fonts_colours(prs, slide_feedback):
+def should_have_high_contrast_fonts_colours(prs, config, slide_feedback):
 # Only checks colours of shapes, textboxes, lines, but not pictures and graphs
-    shape_min_color_contrast_ratio = 1.5
-    font_min_color_contrast_ratio = 3
-    min_size_font = 18
-    min_line_width = 2
+    shape_min_color_contrast_ratio = config["shape_min_color_contrast_ratio"]
+    font_min_color_contrast_ratio = config["font_min_color_contrast_ratio"]
+    min_size_font = config["min_size_font"]
+    min_line_width = config["min_line_width"]
 
     slide_num = 1
     result = True
@@ -326,8 +326,8 @@ def should_have_high_contrast_fonts_colours(prs, slide_feedback):
     return result
 
 
-def should_not_have_excessive_text(prs, slide_feedback):
-    max_num_words_per_slide = 30
+def should_not_have_excessive_text(prs, config, slide_feedback):
+    max_num_words_per_slide = config["max_num_words_per_slide"]
 
     has_excessive_text = False
     slide_num = 1
@@ -393,11 +393,11 @@ def does_not_have_complete_sentences(prs, slide_feedback):
     return result
 
 
-def estimate_presentation_length(prs):
-    seconds_per_word = 0.42
-    seconds_per_pause = 1.5
-    seconds_per_break = 3
-    seconds_between_slides = 2
+def estimate_presentation_length(prs, config):
+    seconds_per_word = config["seconds_per_word"]
+    seconds_per_pause = config["seconds_per_pause"]
+    seconds_per_break = config["seconds_per_break"]
+    seconds_between_slides = config["seconds_between_slides"]
 
     total_prs_time = 0
     string_punctuation = ['.', '?', '!']

@@ -3,4 +3,5 @@ pandas
 numpy
 pretty_html_table
 nltk
+pyyaml
 

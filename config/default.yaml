@@ -1,0 +1,11 @@
+shape_pos_threshold: 0.1
+shape_min_color_contrast_ratio: 1.5
+font_min_color_contrast_ratio: 3
+min_size_font: 18
+min_line_width: 2
+max_num_words_per_slide: 30
+seconds_per_word: 0.42
+seconds_per_pause: 1.5
+seconds_per_break: 3
+seconds_between_slides: 2
+

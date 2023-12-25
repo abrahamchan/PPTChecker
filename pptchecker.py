@@ -3,7 +3,7 @@
 import argparse
 import sys
 from pptx import Presentation
-from util import display_comments_on_webpage, is_backup_slide
+from util import display_comments_on_webpage, is_backup_slide, read_config_yaml
 from rules import (
     must_end_with_summary_slide,
     should_have_slide_numbers,
@@ -20,7 +20,7 @@ parser.add_argument('-o', '--output', type=str, default="output.html")
 args = parser.parse_args()
 
 
-def main_controller(prs):
+def main_controller(prs, config):
     slide_feedback = []
     for slide in prs.slides:
         if is_backup_slide(slide):
@@ -38,21 +38,21 @@ def main_controller(prs):
     if not satisfied:
         general_feedback += "Please add slide numbers.<br>"
 
-    satisfied = has_smooth_slide_transitions(prs, slide_feedback)
+    satisfied = has_smooth_slide_transitions(prs, config, slide_feedback)
     if not satisfied:
         general_feedback += "Please check slide transitions.<br>"
 
-    satisfied = should_have_high_contrast_fonts_colours(prs, slide_feedback)
+    satisfied = should_have_high_contrast_fonts_colours(prs, config, slide_feedback)
     if not satisfied:
         general_feedback += "Please check colours and fonts.<br>"
 
-    satisfied = should_not_have_excessive_text(prs, slide_feedback)
+    satisfied = should_not_have_excessive_text(prs, config, slide_feedback)
     if not satisfied:
         general_feedback += "Please ensure that slides do not have too much text.<br>"
 
     does_not_have_complete_sentences(prs, slide_feedback)
 
-    time_estimate, slide_times, cumul_slide_times = estimate_presentation_length(prs)
+    time_estimate, slide_times, cumul_slide_times = estimate_presentation_length(prs, config)
     if time_estimate:
         print("Estimate total time for presentation: ", time_estimate)
     else:
@@ -82,10 +82,14 @@ def main():
     if not args.presentation.endswith(".pptx"):
         print("Input file must be of '.pptx' type.")
         sys.exit()
+
+    yaml_file = "./config/default.yaml"
+    config = read_config_yaml(yaml_file)
+
     path_to_presentation = args.presentation
     prs = Presentation(path_to_presentation)
 
-    main_controller(prs)
+    main_controller(prs, config)
 
 
 if __name__ == "__main__":
